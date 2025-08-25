@@ -8,6 +8,10 @@ export const userRole = {
   user: "user",
   admin: "admin",
 };
+export const userProviders = {
+  system: "system",
+  google: "google",
+};
 
 const userSchema = new mongoose.Schema(
   {
@@ -16,7 +20,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
       minLength: 1,
-      maxLenghth: 10,
+      maxLength: 50,
     },
     email: {
       type: String,
@@ -29,10 +33,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: String,
+    profileImage: {
+      public_id: { type: String },
+      secure_url: { type: String },
+    },
+    coverImages: [
+      {
+        public_id: { type: String },
+        secure_url: { type: String },
+      },
+    ],
     phone: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
     },
     gender: {
@@ -42,7 +55,7 @@ const userSchema = new mongoose.Schema(
     },
     age: {
       type: Number,
-      required: true,
+      // required: true,
       min: 18,
       max: 60,
     },
@@ -54,6 +67,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: Object.values(userRole),
       default: userRole.user,
+    },
+    otp: {
+      type: String,
+    },
+    isDeleted: Boolean,
+    deletedBy: {
+      type: mongoose.Schema.Types.ObjectId, // populate subject
+      ref: "User", // collection name
+    },
+    provider: {
+      type: String,
+      enum: Object.values(userProviders),
+      default: userProviders.system,
     },
   },
   {
