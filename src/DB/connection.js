@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import chalk from 'chalk';
 
 const connectDB = async()=>{
   await mongoose.connect(process.env.DB_URL_LOCAL)
   .then(()=>{
-console.log("DB is connected successfully")
+  console.log(chalk.blue("DB is connected successfully"))
   })
   .catch((error=>{
 console.log("Faild to connect DB")

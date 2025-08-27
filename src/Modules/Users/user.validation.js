@@ -12,38 +12,36 @@ export const signupSchema = {
     phone: Joi.string().required(),
   }).required(),
 
-      files: Joi.object({
+  files: Joi.object({
     attachment: Joi.array().required(),
-    attachments:Joi.array().required()
-    })
+    attachments: Joi.array().required(),
+  }),
 
-    // // file only one schema
-    // file: Joi.object({
-    // filename: Joi.string().required(),
-    // mimetype: Joi.string()
-    //   // .valid('image/jpeg', 'image/png', 'image/jpg') // Specify allowed types
-    //   .required()
-    //   .messages({
-    //     "any.only": "File must be a JPEG or PNG image",
-    //     "any.required": "File type is required",
-    //   }),
+  // // file only one schema
+  // file: Joi.object({
+  // filename: Joi.string().required(),
+  // mimetype: Joi.string()
+  //   // .valid('image/jpeg', 'image/png', 'image/jpg') // Specify allowed types
+  //   .required()
+  //   .messages({
+  //     "any.only": "File must be a JPEG or PNG image",
+  //     "any.required": "File type is required",
+  //   }),
 
-    // size: Joi.number()
-    //   .max(5 * 1024 * 1024) // 5MB limit
-    //   .required()
-    //   .messages({
-    //     "number.max": "File size must not exceed 5MB",
-    //     "any.required": "File size is required",
-    //   }),
+  // size: Joi.number()
+  //   .max(5 * 1024 * 1024) // 5MB limit
+  //   .required()
+  //   .messages({
+  //     "number.max": "File size must not exceed 5MB",
+  //     "any.required": "File size is required",
+  //   }),
   // })
   // .unknown(true) // This allows other fields from Multer
   // .required()
   // .messages({
   //   "any.required": "A file is required",
   // }),
-
 };
-
 
 export const loginSchema = {
   body: Joi.object({
@@ -81,5 +79,12 @@ export const updateProfileSchema = {
 export const freezeSchema = {
   params: Joi.object({
     id: Joi.string(),
+  }),
+};
+
+export const updateProfileImageSchema = {
+  files: Joi.object({
+    // attachment: Joi.array().required(),
+    attachments: Joi.array().required(),
   }),
 };

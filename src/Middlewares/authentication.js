@@ -45,6 +45,11 @@ export const authentication = async (req, res, next) => {
     }
   }
 
+  if(!user?.confirmed || !user?.isDeleted == false){
+      throw new Error("Please confirm email first or account is freezed", { cause: 400 });
+  }
+
+
   req.userAuth = user;
   req.decoded = decoded;
 

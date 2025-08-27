@@ -1,6 +1,7 @@
 import userModel from "../../DB/Models/user.model.js";
 import messageModel from "../../DB/Models/message.model.js";
 
+
 export const createMessage = async (req, res, next) => {
   const { content, userId } = req.body;
 
@@ -9,7 +10,7 @@ export const createMessage = async (req, res, next) => {
     isDeleted: { $exists: false },
   });
 
-  console.log({ userExist });
+  ////  console.log({ userExist });
 
   if (!userExist) {
     return next(new Error("Account was not found or frozen", { cause: 404 }));
@@ -28,7 +29,10 @@ export const createMessage = async (req, res, next) => {
 
 export const listMessages = async (req, res, next) => {
   // find = All messages & findOne = only one message
-  const userMessages = await messageModel.find({ userId: req?.userAuth?._id });
+  const userMessages = await messageModel.find({ userId: req?.userAuth?._id }).populate({
+    path:"userId",
+    select:"name email"
+  })
 
   return res.status(201).json({
     message: "Done",

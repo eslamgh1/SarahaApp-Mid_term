@@ -9,3 +9,12 @@ export const createMessageSchema = {
 
 
   }
+
+  export const getOneMessageSchema = {
+  params: Joi.object({
+    id: Joi.string().min(5).required()
+
+  }).required()
+
+
+  }

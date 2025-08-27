@@ -23,12 +23,6 @@ userRouter.post("/signup",MulterHost({
 );
 
 
-
-
-
-
-
-
 // userRouter.post("/signup",Multer().single("image"), validation(userValidatiom.signupSchema), userServices.signUp);
 userRouter.post(
   "/login",
@@ -62,6 +56,22 @@ userRouter.patch(
   validation(userValidatiom.updateProfileSchema),
   authentication,
   userServices.updateProfile
+);
+
+userRouter.patch(
+  "/updateProfileImage",
+
+  MulterHost({
+  customPath:"users/profile", 
+  customExtensions: [
+    ...allowedExtension.image,
+    ...allowedExtension.video,
+    ...allowedExtension.pdf,
+  ]}).array("attachments"),
+
+  // validation(userValidatiom.updateProfileImageSchema),
+  authentication,
+  userServices.updateProfileImage
 );
 userRouter.get("/getprofile/:id", userServices.getProfileData);
 userRouter.delete(
