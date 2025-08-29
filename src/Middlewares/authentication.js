@@ -25,7 +25,6 @@ export const authentication = async (req, res, next) => {
 
   const decoded = await verifyToken({ payload: token, SIGNATURE: signature });
 
-  console.log(decoded);
 
     //check revoke Token
   const revoked = await revokeTokenModel.findOne({tokenId:decoded.jti})

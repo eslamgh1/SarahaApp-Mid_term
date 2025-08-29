@@ -1,13 +1,11 @@
 
 export const validation = (schema) => {
   return (req, res, next) => {
-    // console.log(Object.values(schema));
-    console.log(Object.keys(schema));  // return array of strings
+    // console.log(Object.keys(schema));  // return array of strings
 
     let validationError = [];
 //! Loop through each key in the schema (e.g., 'body', 'params')
     for (const key of Object.keys(schema)) {
-      console.log(key);
 //! Bracket notation (schema[key]) allows you to use a variable or expression to dynamically access
 //! validate Method When you create a Joi schema (e.g., Joi.object({...})), it returns a Joi schema object
 //!

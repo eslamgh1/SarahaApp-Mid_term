@@ -20,7 +20,6 @@ export const MulterLocal = (customePath ="generals", customExtensions = []) => {
       cb(null, fullPath);
     },
     filename: function (req, file, cb) {
-      console.log(file);
       const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
       cb(null, uniqueSuffix + "_" + file.originalname);
     },

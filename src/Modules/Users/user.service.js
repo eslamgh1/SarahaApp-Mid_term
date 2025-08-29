@@ -25,7 +25,6 @@ export const signUp = async (req, res, next) => {
   const { name, email, password, cPassword, phone, gender, age, role } =
     req.body;
 
-  console.log(req.files); // return array of objects [ {}, {} ,{}]
 
   const arryPath = [];
   for (const file of req?.files.attachments) {
@@ -50,16 +49,15 @@ export const signUp = async (req, res, next) => {
     }
   );
 
-  //   // * check password&cPassword or Joy
-  //   //// if (password !== cPassword) {
-  //   ////   return res
-  //   ////     .status(400)
-  //   ////     .json({ message: "Password doesn't match cPassword" });
-  //   //// }
+    // * check password&cPassword or Joy
+    // if (password !== cPassword) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Password doesn't match cPassword" });
+    // }
 
   //check email
   const emailUser = await userModel.findOne({ email });
-  // console.log(emailUser)
   if (emailUser) {
     {
       // return res.status(409).json({ message: "Email already exists" });
@@ -71,49 +69,28 @@ export const signUp = async (req, res, next) => {
     palinText: password,
     SALT_ROUNDS: +process.env.SALT_ROUNDS,
   });
-  //// const hash = bcrypt.hashSync(password, +process.env.SALT_ROUNDS);
 
   //Encrypt Phone
   const phoneEncrypt = await Encrypt({
     plainText: phone,
     SECRET_KEY: process.env.ENCRYPTION_KEY,
   });
-  //   // const phoneEncrypt = CryptoJS.AES.encrypt(phone, process.env.ENCRYPTION_KEY).toString();
 
-  //   // Send email
+    //* Send email
 
-  //   // eventEmitter.emit("sendEmail", { email });
+    eventEmitter.emit("sendEmail", { email });
 
-  //   //* ==============eventEmitter.emit ==> Instead of below ======================//
-  //   // // Send email
-  //   //// const token = await generateToken({
-  //   //   payload: { email },
-  //   //   SIGNATURE: process.env.JWT_SIGNATURE_EMAIL,
-  //   //   options: { expiresIn: "1h" },
-  //   //// });
-  //   //// const link = `http://localhost:3000/users/confirmEmail/${token}`;
 
-  //   //// const isSend = await sendEmail({
-  //   //   to: email,
-  //   //   subject: "Hello ✔",
-  //   //   html: `<a href="${link}">Confirm Email</a>`,
-  //   //// });
-
-  //   //// if (!isSend) {
-  //   ////   throw new Error("Fail to send email", { cause: 404 });
-  //   //// }
-
-  //   /////* =============End=======================//
 
   //   //* ==================   Upload  file section  ==================
-  //   // req?.files? = Array of object
-  //   // Forof method==> loop in Object and return array
+    // req?.files? = Array of object
+    // Forof method==> loop in Object and return array
 
-  //   // static path ex: http://localhost:3000/uploads/users/profile/.........
-  //   // const arrayPaths = []
-  //   // for (const file of req?.file) {
-  //   // arrayPaths.push(file.path)
-  //   // }
+    // static path ex: http://localhost:3000/uploads/users/profile/.........
+    // const arrayPaths = []
+    // for (const file of req?.file) {
+    // arrayPaths.push(file.path)
+    // }
 
   // * Create User
   const user = await userModel.create({
@@ -163,7 +140,6 @@ export const login = async (req, res, next) => {
         : process.env.JWT_ACCESS_SECRET_ADMIN, // dynamic signature
     options: { expiresIn: "1y", jwtid: nanoid() },
   });
-  console.log(accessToken);
 
   const refreshToken = jwt.sign(
     { id: user._id, email },
@@ -252,7 +228,6 @@ export const refreshToken = async (req, res, next) => {
 
   const decoded = await verifyToken({ payload: token, SIGNATURE: signature });
 
-  console.log(decoded);
 
   //check revoke Token
   const revoked = await revokeTokenModel.findOne({ tokenId: decoded.jti });
@@ -263,7 +238,6 @@ export const refreshToken = async (req, res, next) => {
     }
   }
 
-  console.log(decoded);
   //check email
   const user = await userModel.findOne({ email: decoded.email });
 
@@ -317,7 +291,6 @@ export const updatePassword = async (req, res, next) => {
 
   req.userAuth.password = hashPassword; // overwrite by hashPassword
 
-  console.log(req.userAuth.password);
 
   // await req.user.save()
   await req.userAuth.save();
@@ -401,7 +374,6 @@ export const resetPassword = async (req, res, next) => {
     { email },
     { password: hashNewPassword, $unset: { otp: "" } }
   );
-  console.log(updateUser);
 
   return res.status(201).json({ message: "resetPassword is successeded" });
 };
@@ -563,8 +535,6 @@ export const loginWithGmail = async (req, res, next) => {
       });
     }
   }
-  console.log({ user });
-  console.log({ test: user.provider, pass: user.password });
   if (user.provider !== userProviders.google) {
     throw new Error("Please login on System", { cause: 401 });
   }
@@ -608,7 +578,7 @@ export const updateProfileImage = async (req, res, next) => {
 
     arryPath.push({ secure_url, public_id });
   }
-  console.log(arryPath)
+
 
   const user = await userModel.findByIdAndUpdate(
     { _id: req?.userAuth._id },

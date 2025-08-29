@@ -10,7 +10,6 @@ export const createMessage = async (req, res, next) => {
     isDeleted: { $exists: false },
   });
 
-  ////  console.log({ userExist });
 
   if (!userExist) {
     return next(new Error("Account was not found or frozen", { cause: 404 }));
